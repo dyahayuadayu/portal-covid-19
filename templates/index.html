@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+{% load leaflet_tags %}
+<head>
+	{% leaflet_js %}
+	{% leaflet_css %}
+	<title>SIG | PostGIS</title>
+	<style type="text/css">
+		#gis {width: 100%;height:450px;}
+	</style>
+	<link rel="stylesheet" type="text/css" href="{% static 'routing/leaflet-routing-machine.css' %}">	
+	<link rel="stylesheet" type="text/css" href="{% static 'css/easy-button.css' %}">
+
+	<link rel="stylesheet" type="text/css" href="{% static 'leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.css' %}">	
+	<script type="text/javascript" src="{% static 'dist/leaflet.ajax.js' %}" >	</script>
+	<script type="text/javascript" src="{% static 'leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.js' %}" ></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="{% static 'js/easy-button.js' %}" ></script>	
+</head>
+<script type="text/javascript" src="{% static 'routing/leaflet-routing-machine.js' %}" ></script>
+<body>
+<script type="text/javascript">
+$("#printBtn").click(function(){
+  $('#map').print();
+});
+</script>
+<script type="text/javascript">
+	function our_layers(map,options){
+		var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				maxZoom: 19,
+				attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+			});
+		var OpenTopoMap = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+			maxZoom: 17,
+			attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+		});
+		var datasets = new L.GeoJSON.AJAX("{% url 'county' %}",{
+			style: function colors(feature){
+				switch(feature.properties.name_4){
+					case 'Simokerto':
+						return{
+							color: 'orange',
+							fillOpacity: 0.6
+						};
+					break;
+					case 'Sono Kwijenan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Dr. Sutomo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Menur Pumpungan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Ngiden Jangkungan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Jepara':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Bubutan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Asemrowo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Genting':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Greges':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Gundih':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kalianak':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Tambak Langon':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kandangan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Klakahrejo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Romokalisari':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Sememi':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Tambak Oso Wilangon':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Alon-alon Contong':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Tembok Dukuh':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Bulak':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kedung Cowek':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kenjeran':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Komplek Kenjeran':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Sukolilo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Dukuh Kupang':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Dukuh Pakis':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Gunungsari':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Pradahkali Kendal':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Dukuh Menanggal':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Gayungan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Ketintang':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Menanggal':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Embong Kaliasin':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Genteng':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kapasari':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Ketabang':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Peneleh':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Airlangga':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Baratajaya':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Gubeng':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kertajaya':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Mojo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Pucang Sewu':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Gununganyar':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Jambangan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Gununganyartambak':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Rungkut Menanggal':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Rungkut Tengah':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Karah':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kebonsari':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Pagesangan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Karang Pilang':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kebraon':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kedurus':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Warugunung':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Bulak Banteng':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Sidotopo Wetan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Tambak Wedi':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Tanah Kali Kedinding':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Dupak':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kemayoran':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Krembangan Selatan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Morokrembangan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Perak Barat':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Bangkingan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Jeruk':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Lakarsantri':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Lidah Kulon':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Lidah Wetan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Sumur Welut':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Dukuh Sutorejo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kalijudan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kalisari':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kejawen Putih Tambak':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Manyar Sabrangan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Mulyorejo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Bongkaran':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Krembangan Utara':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Nyamplungan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Perak Timur':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Perak Utara':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Babat Jerawat':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Benowo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Tambakdono':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Pakal':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Sumberrejo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kali Rungkut':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kedung Baruk':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Banyu Urip':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Medokan Ayu':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Penjaringan Sari':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Rungkut Kidul':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Wonorejo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Bringin':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Lontar':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kupang Krajan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Made':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Sambikerep':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Pakis':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Petemon':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Putat Jaya':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Sawahan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Ampel':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Pegirian':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Sidotopo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kapasan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Sidodadi':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Ujung':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Wonokusumo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Simolawang':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Tambakrejo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Putat Gede':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Simomulyo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Suko Manunggal':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Tanjungsari':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Gebang Putih':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Keputih':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Klampis Ngasem':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Medokan Semampir':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Semolowaru':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Gading':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Pacar Keling':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Pacar Kembang':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Ploso':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Rangkah':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Tambaksari':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Balongsari':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Banjar Sugihan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Bibis':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Tandes Lor':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Buntaran':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Gadel':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Gedangasin':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Karangpoh':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Manukan Kulon':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Manukan Wetan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Tandes Kidul':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Tubanan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kedungdoro':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Keputran':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Tegalsari':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Wonorejo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kendangsari':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Kutisari':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Panjang Jiwo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Prapen':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Tenggilis Mejoyo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Babatan':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Balas Klumprik':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Jajar Tunggal':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Wiyung':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Bendul Merisi':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Jemur Wonosari':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Margorejo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Sidosermo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Siwalankerto':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Darmo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Jagir':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Ngagel':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Ngagelrejo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Wonokromo':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					case 'Sawunggaling':
+						return{
+							color: 'blue',
+							fillOpacity: 0.2
+						};
+					break;
+					
+
+				}
+			},
+			onEachFeature: function(feature,layer){
+				var name = feature.properties.type_4.toString()+" "+feature.properties.name_4.toString();
+				var pk = feature.properties.pk;
+				layer.bindPopup(`<a href= /district-post/${pk} >`+name+`</a>`);
+			},
+
+		});
+
+		var points = new L.GeoJSON.AJAX("{% url 'incidences' %}",{
+			pointToLayer: function (feature, latlng) {
+                return L.marker(latlng, {
+                    icon: L.icon({
+                        iconUrl: "static/img/red.png",
+                        iconSize: [24, 28],
+                        iconAnchor: [12, 28],
+                        popupAnchor: [0, -25]
+                    }),
+                    title: feature.properties.NAME,
+                    riseOnHover: true
+                });
+            },
+			onEachFeature: function(feature,layer){
+
+				var name = feature.properties.name.toString();
+				var pk = feature.properties.pk;
+                layer.bindPopup(`<a href= /point-post/${pk} >`+name+`</a>`);
+
+			}
+
+		});
+
+		//datasets.addTo(map);
+		points.addTo(map);
+		
+
+		var baseLayers = {
+			"OSM": osm,
+			"OpenTopoMap":OpenTopoMap
+		}
+
+		var groupedOverlays = {
+		  "Layers": {
+		    "kelurahan": datasets,
+		    "kasus": points
+		  }
+
+		};
+
+		L.control.groupedLayers(baseLayers, groupedOverlays).addTo(map);
+
+		var routing =  L.Routing.control({
+		  waypoints: [
+		    L.latLng(-0.23, 36.87),
+		    L.latLng(0.23, 37.64)
+		  ]
+		});
+
+		L.easyButton('fa-compass',
+		  function (){
+		    $('.leaflet-routing-container').is(':visible') ? routing.removeFrom(map) : routing.addTo(map)
+		  },
+		  'Routing'
+		).addTo(map);
+
+
+		function createButton(label, container) {
+		    var btn = L.DomUtil.create('button', '', container);
+		    btn.setAttribute('type', 'button');
+		    btn.innerHTML = label;
+		    return btn;
+		}
+
+	}
+
+</script>
+{% leaflet_map "gis" callback="window.our_layers" %}
+</body>
+</html>

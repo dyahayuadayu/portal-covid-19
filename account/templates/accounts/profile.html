@@ -1,0 +1,22 @@
+{% extends "base_account.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <br>
+    <div class="content-section offset-2 col-8">
+        <div class="col-md-12" style="text-align: center;">
+          <img src="{{ user.profile.image.url }}" class="img-fluid rounded-circle account-img" alt="photo profile" style="max-height: 200px;">
+          <br>
+        </div>
+      <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <fieldset class="form-group">
+              <legend class="border-bottom mb-4">Informasi Profil</legend>
+              {{ u_form|crispy }}
+              {{ p_form|crispy }}
+          </fieldset>
+          <div class="form-group">
+              <button class="btn btn-outline-info" type="submit">Ubah</button>
+          </div>
+      </form>
+    </div>
+{% endblock content %}
