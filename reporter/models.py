@@ -6,7 +6,7 @@ from django.db.models import Manager as GeoManager
 
 # Create your models here.
 class Incidences(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.TextField()
     location = gis_models.PointField(srid=4326)
     objects = GeoManager()
 
